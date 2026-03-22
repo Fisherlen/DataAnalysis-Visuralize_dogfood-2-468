@@ -14,3 +14,11 @@ output_file = r"Data\TOP100_DATA_25年11月.csv"
 # 读取SPSS文件
 df, meta = pyreadstat.read_sav(input_file)
 
+# 保存为CSV文件
+df.to_csv(output_file, index=False, encoding='utf-8-sig')
+
+print(f"转换完成！")
+print(f"原始文件: {input_file}")
+print(f"输出文件: {output_file}")
+print(f"数据形状: {df.shape}")
+print(f"列名: {list(df.columns)}")
