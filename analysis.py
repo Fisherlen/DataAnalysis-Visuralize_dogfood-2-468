@@ -24,9 +24,8 @@ print("\n数据列:", df.columns.tolist())
 print("\n数据清洗前的缺失值情况:")
 print(df.isnull().sum())
 
-# 共7个指标与IncreaseYTD进行分析（包括DATE, 序, 代码等所有可用数值指标）
-analysis_columns = ['VALUE', 'IncreaseThisYear', 'IncreaseYTD', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue', 'DATE', '序', '代码']
-# 注意：DATE是日期格式，转换为数值用于相关性分析
+# 仅选择有实际经济意义的指标进行分析
+analysis_columns = ['VALUE', 'IncreaseThisYear', 'IncreaseYTD', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue']
 
 # 删除包含缺失值的行
 df_clean = df[analysis_columns].dropna()
@@ -79,9 +78,8 @@ print("\n" + "="*60)
 print("典型相关分析 (Canonical Correlation Analysis)")
 print("="*60)
 
-# 将IncreaseYTD作为因变量集合，其他指标作为自变量集合（共8个自变量，与IncreaseYTD组成9列）
-# 7个自变量：VALUE, IncreaseThisYear, MarketValue, MARKETVALUEGroup, TOP100MarketValue, DATE, 序, 代码
-X = df_clean[['VALUE', 'IncreaseThisYear', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue', 'DATE', '序', '代码']].values
+# 将IncreaseYTD作为因变量集合，其他指标作为自变量集合（共5个有实际经济意义的自变量）
+X = df_clean[['VALUE', 'IncreaseThisYear', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue']].values
 Y = df_clean[['IncreaseYTD']].values
 
 # 标准化数据
@@ -103,7 +101,7 @@ print(f"典型相关系数: {canonical_corr:.4f}")
 
 # 获取权重
 print("\n自变量的典型权重:")
-for i, col in enumerate(['VALUE', 'IncreaseThisYear', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue', 'DATE', '序', '代码']):
+for i, col in enumerate(['VALUE', 'IncreaseThisYear', 'MarketValue', 'MARKETVALUEGroup', 'TOP100MarketValue']):
     print(f"{col}: {cca.x_weights_[i][0]:.4f}")
 
 print(f"\n因变量IncreaseYTD的典型权重:")
